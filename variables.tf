@@ -213,7 +213,7 @@ variable "access_by_gateway_route" {
 }
 
 variable "tribe_name" {
-  description = "e.g. questionnaire"
+  description = "The name of this micro-service tribe."
   type        = string
 }
 
