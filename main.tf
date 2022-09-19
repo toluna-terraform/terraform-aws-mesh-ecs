@@ -267,7 +267,7 @@ resource "aws_appmesh_virtual_service" "external_service_virtualservice" {
     provider {
       virtual_router {
         # should be changed to integrator:
-        virtual_router_name = aws_appmesh_virtual_router.external_service_virtualrouter.name
+        virtual_router_name = aws_appmesh_virtual_router.virtual_route_1.name
       }
     }
   }
