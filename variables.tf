@@ -173,11 +173,6 @@ variable "namespace" {
   type = string
 }
 
-variable "mesh_owner_profile" {
-  description = "The profile name of the AppMesh owner."
-  type = string
-}
-
 variable "app_mesh_name" {
   description = "The mesh name"
   type = string
