@@ -1,6 +1,7 @@
 locals {
     prefix = "${var.app_name}-${var.env_name}"
     security_cidr = split(",", data.aws_ssm_parameter.security_cidr.value)
+    
 }
 
 #--- Provider for Mesh owner profile ---#
@@ -258,8 +259,7 @@ resource "aws_appmesh_virtual_node" "blue_green_virtual_nodes" {
 
 #--- Virtual services for external_services ---#
 resource "aws_appmesh_virtual_service" "external_service_virtualservice" {
-  count = var.is_integrator == true ? 1: 0
-  for_each  = toset(var.integrator_external_services)
+  for_each  = var.is_integrator ? tomap(var.external_services) : {}
   name      = "${each.key}"
   mesh_name = var.env_name
   mesh_owner = var.app_mesh_profile
