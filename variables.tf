@@ -213,6 +213,6 @@ variable "tribe_name" {
 }
 
 variable "is_integrator" {
-  type = boolean 
+  type = bool 
   description = "Set this var to true if the ECS is the integrator of the Mesh."
 }
