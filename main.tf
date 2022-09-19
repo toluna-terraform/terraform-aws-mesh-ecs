@@ -258,6 +258,7 @@ resource "aws_appmesh_virtual_node" "blue_green_virtual_nodes" {
 
 #--- Virtual services for external_services ---#
 resource "aws_appmesh_virtual_service" "external_service_virtualservice" {
+  count = var.is_integrator == true ? 1: 0
   for_each  = toset(var.integrator_external_services)
   name      = "${each.key}"
   mesh_name = var.env_name
