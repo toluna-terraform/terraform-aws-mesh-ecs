@@ -199,7 +199,7 @@ resource "aws_appmesh_route" "service_route" {
     }
   }
   depends_on = [
-    aws_appmesh_virtual_node.td_net
+    aws_appmesh_virtual_node.blue_green_virtual_nodes
   ]
   # Ignoring changes made by code_deploy controller
   lifecycle {
