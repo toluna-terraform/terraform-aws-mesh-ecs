@@ -2,13 +2,25 @@ locals {
     prefix = "${var.app_name}-${var.env_name}"
     security_cidr = split(",", data.aws_ssm_parameter.security_cidr.value)
     
+
+    # Added in local for a valid usage in the conditions in data.tf
+    dockerLabels                  = jsonencode(var.dockerLabels)
+    app_container_environment     = jsonencode(var.app_container_environment)
+    envoy_dockerLabels            = jsonencode(var.envoy_dockerLabels)
+    envoy_container_environment   = jsonencode(var.envoy_container_environment)
+    app_container_secrets         = jsonencode(var.app_container_secrets)
+    datadog_container_secrets     = jsonencode(var.datadog_container_secrets)
+    datadog_container_environment = jsonencode(var.datadog_container_environment)
+    datadog_dockerLabels          = jsonencode(var.datadog_dockerLabels)
+
+    external_services_list = var.is_integrator == true ? var.external_services : []
 }
 
 #--- Provider for Mesh owner profile ---#
 provider "aws" {
   alias   = "app_mesh"
   profile = "${var.app_mesh_profile}"
-  region = data.aws_region.current
+  region = data.aws_region.current.name
 }
 
 #--- ECS resources ---#
@@ -125,7 +137,7 @@ resource "aws_appmesh_gateway_route" "gw_route_1" {
   provider             = aws.app_mesh
   name                 = "gw-${var.app_mesh_name}-${local.prefix}-route"
   mesh_name            = var.app_mesh_name
-  mesh_owner           = var.app_mesh_profile
+  mesh_owner           = var.app_mesh_account_id
   virtual_gateway_name = "gw-${var.app_mesh_name}"
 
   spec {
@@ -133,7 +145,7 @@ resource "aws_appmesh_gateway_route" "gw_route_1" {
       action {
         target {
           virtual_service {
-            virtual_service_name = aws_appmesh_virtual_service.service.name
+            virtual_service_name = aws_appmesh_virtual_service.virtual_service_1.name
           }
         }
       }
@@ -148,7 +160,7 @@ resource "aws_appmesh_gateway_route" "gw_route_1" {
 resource "aws_appmesh_virtual_router" "virtual_route_1" {
   name       = "vr-${var.app_name}-${var.env_name}"
   mesh_name  = "${var.app_mesh_name}"
-  mesh_owner = "${var.app_mesh_profile}"
+  mesh_owner = "${var.app_mesh_account_id}"
 
   spec {
     listener {
@@ -164,7 +176,7 @@ resource "aws_appmesh_virtual_router" "virtual_route_1" {
 resource "aws_appmesh_virtual_service" "virtual_service_1" {
   name       = "${var.env_name}.${var.namespace}"
   mesh_name  = "${var.app_mesh_name}"
-  mesh_owner = "${var.app_mesh_profile}"
+  mesh_owner = "${var.app_mesh_account_id}"
 
   spec {
     provider {
@@ -178,7 +190,7 @@ resource "aws_appmesh_virtual_service" "virtual_service_1" {
 resource "aws_appmesh_route" "service_route" {
   name                = "route-${var.app_name}-${var.env_name}"
   mesh_name           = "${var.app_mesh_name}"
-  mesh_owner          = "${var.app_mesh_profile}"
+  mesh_owner          = "${var.app_mesh_account_id}"
   virtual_router_name = aws_appmesh_virtual_router.virtual_route_1.name
   spec {
     http_route {
@@ -213,7 +225,7 @@ resource "aws_appmesh_virtual_node" "blue_green_virtual_nodes" {
   for_each   = toset(["blue", "green"])
   name       = "vn-${var.app_name}-${var.env_name}-${each.key}"
   mesh_name  = var.app_mesh_name
-  mesh_owner = "${var.app_mesh_profile}"
+  mesh_owner = "${var.app_mesh_account_id}"
   spec {
     listener {
       port_mapping {
@@ -259,14 +271,13 @@ resource "aws_appmesh_virtual_node" "blue_green_virtual_nodes" {
 
 #--- Virtual services for external_services ---#
 resource "aws_appmesh_virtual_service" "external_service_virtualservice" {
-  for_each  = var.is_integrator ? tomap(var.external_services) : {}
+  for_each  = toset(local.external_services_list)
   name      = "${each.key}"
   mesh_name = var.env_name
-  mesh_owner = var.app_mesh_profile
+  mesh_owner = var.app_mesh_account_id
   spec {
     provider {
       virtual_router {
-        # should be changed to integrator:
         virtual_router_name = aws_appmesh_virtual_router.virtual_route_1.name
       }
     }

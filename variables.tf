@@ -9,6 +9,11 @@ variable "env_name" {
   type        = string
 }
 
+variable "aws_profile" {
+  description = "The profile name for the ECS"
+  type        = string
+}
+
 variable "app_mesh_profile" {
   description = "The profile name of the Mesh owner."
   type        = string
@@ -178,8 +183,8 @@ variable "app_mesh_name" {
   type = string
 }
 
-variable "app_mesh_env" {
-  description = "The mesh name"
+variable "app_mesh_account_id" {
+  description = "The mesh owner account ID"
   type = string
 }
 
