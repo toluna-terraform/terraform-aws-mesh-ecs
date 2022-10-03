@@ -200,11 +200,6 @@ variable "external_services" {
   default     = []
 }
 
-variable "integrator_external_services" {
-  description = "Additional policies to be added to the IAM role"
-  type        = list(string)
-  default     = []
-}
 
 variable "access_by_gateway_route" {
   description = "Boolean which initiates if service is added to App mesh gatway"
