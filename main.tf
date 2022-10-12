@@ -174,7 +174,7 @@ resource "aws_appmesh_virtual_router" "virtual_route_1" {
 
 
 resource "aws_appmesh_virtual_service" "virtual_service_1" {
-  name       = "${var.namespace}"
+  name       = "${var.env_name}.${var.namespace}"
   mesh_name  = "${var.app_mesh_name}"
   mesh_owner = "${var.app_mesh_account_id}"
 
