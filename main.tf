@@ -13,7 +13,7 @@ locals {
     datadog_container_environment = jsonencode(var.datadog_container_environment)
     datadog_dockerLabels          = jsonencode(var.datadog_dockerLabels)
 
-    external_services_list = var.is_integrator == true ? var.external_services : []
+    external_services_list = var.is_orchestrator == true ? var.external_services : []
 }
 
 #--- Provider for Mesh owner profile ---#

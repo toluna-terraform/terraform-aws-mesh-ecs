@@ -212,7 +212,7 @@ variable "tribe_name" {
   type        = string
 }
 
-variable "is_integrator" {
+variable "is_orchestrator" {
   type = bool 
-  description = "Set this var to true if the ECS is the integrator of the Mesh."
+  description = "Set this var to true if the ECS is the Orchestrator of the Mesh."
 }
