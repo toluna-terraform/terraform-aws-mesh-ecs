@@ -278,12 +278,12 @@ resource "aws_appmesh_virtual_service" "external_service_virtualservice" {
   spec {
     provider {
       virtual_router {
-
-        virtual_router_name = aws_appmesh_virtual_router.virtual_route_1.name
+        virtual_router_name = "vr-questionnaire-net-qas"
       }
     }
   }
 }
+
 
 #--- IAM ---#
 resource "aws_iam_role" "ecs_task_execution_role" {
