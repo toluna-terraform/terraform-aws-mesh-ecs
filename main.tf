@@ -1,18 +1,12 @@
 locals {
+  
     prefix = "${var.app_name}-${var.env_name}"
     security_cidr = split(",", data.aws_ssm_parameter.security_cidr.value)
-    
 
     # Added in local for a valid usage in the conditions in data.tf
-    dockerLabels                  = jsonencode(var.dockerLabels)
-    app_container_environment     = jsonencode(var.app_container_environment)
-    envoy_dockerLabels            = jsonencode(var.envoy_dockerLabels)
-    envoy_container_environment   = jsonencode(var.envoy_container_environment)
-    app_container_secrets         = jsonencode(var.app_container_secrets)
-    datadog_container_secrets     = jsonencode(var.datadog_container_secrets)
-    datadog_container_environment = jsonencode(var.datadog_container_environment)
-    datadog_dockerLabels          = jsonencode(var.datadog_dockerLabels)
-
+    app_container_environment     = jsonencode(data.template_file.app_container_environment)
+    envoy_container_environment     = jsonencode(data.template_file.envoy_container_environment)
+    datadog_container_environment     = jsonencode(data.template_file.datadog_container_environment)
     external_services_list = var.is_orchestrator == true ? var.external_services : []
 }
 

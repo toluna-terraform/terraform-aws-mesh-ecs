@@ -1,0 +1,22 @@
+[
+    { "name" : "NODE_DEBUG", "value" : "debug" },
+    { "name" : "NODE_NAME", "value" : "vn-${APP_NAME}-${ENV_NAME}-{BG_COLOR}" },
+    { "name" : "MESH_NAME", "value" : "${APP_MESH_NAME}" },
+    { "name" : "MESH_OWNER", "value" : "${APP_MESH_ACCOUNT_ID}" },
+    { "name" : "SERVICE_NAME", "value" : "${APP_NAME}-${ENV_NAME}" },
+    { "name" : "DD_ENV", "value" : "${APP_MESH_NAME}.${APP_MESH_ACCOUNT_ID}" },
+    { "name" : "DD_INTEGRATIONS", "value" : "/opt/datadog/integrations.json" },
+    { "name" : "DD_RUNTIME_METRICS_ENABLED", "value" : "true" },
+    { "name" : "DD_SERVICE", "value" : "${APP_NAME}-${ENV_NAME}" },
+    { "name" : "DD_TRACE_SAMPLE_RATE", "value" : "1" },
+    { "name" : "DD_VERSION", "value" : "0.0.1" },
+    { "name" : "ENABLE_ENVOY_DATADOG_TRACING", "value" : "true" },
+    { "name" : "ENVOY_LOG_LEVEL", "value" : "debug" },
+    { "name" : "DATADOG_TRACER_PORT", "value" : "8126" },
+    { "name" : "DD_TRACE_AGENT_PORT", "value" : "8126" },
+    { "name" : "DD_AGENT_HOST", "value" : "localhost" },
+    { "name" : "DD_CLOUD_PROVIDER_METADATA", "value" : "aws" },
+    { "name" : "DD_TAGS", "value" : "service:${APP_NAME},env:${APP_MESH_NAME}.${APP_MESH_PROFILE},version:0.0.1,source:${APP_NAME}" },
+    { "name" : "DD_DOGSTATSD_NON_LOCAL_TRAFFIC", "value" : "true" },
+    { "name" : "ECS_FARGATE", "value" : "true" }
+]

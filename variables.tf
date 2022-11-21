@@ -5,9 +5,10 @@ variable "app_name" {
 }
 
 variable "env_name" {
-  description = "environment name"
-  type        = string
+  description = "Env name without color suffix."
+  type = string
 }
+
 
 variable "aws_profile" {
   description = "The profile name for the ECS"
@@ -73,35 +74,6 @@ variable "aws_cloudwatch_log_group_name" {
   type        = string
 }
 
-variable "app_container_environment" {
-  description = "The environment variables to pass to a container"
-  type        = list(map(string))
-  default     = []
-}
-
-variable "dockerLabels" {
-  description = "A key/value map of labels to add to the container"
-  type        = map(string)
-  default     = {}
-}
-
-variable "envoy_container_environment" {
-  description = "The environment variables to pass to a container"
-  type        = list(map(string))
-  default     = []
-}
-
-variable "envoy_dockerLabels" {
-  description = "A key/value map of labels to add to the container"
-  type        = map(string)
-  default     = {}
-}
-
-variable "app_container_secrets" {
-  description = "The secrets to pass to the app container"
-  type        = list(map(string))
-  default     = []
-}
 
 variable "app_container_image" {
   description = "App container image"
@@ -150,16 +122,9 @@ variable "datadog_container_environment" {
   default     = []
 }
 
-variable "datadog_container_secrets" {
+variable "datadog_api_key" {
   description = "The secrets to pass to the datadog container"
-  type        = list(map(string))
-  default     = []
-}
-
-variable "datadog_dockerLabels" {
-  description = "A key/value map of labels to add to the container"
-  type        = map(string)
-  default     = {}
+  type        = string
 }
 
 variable "envoy_app_ports" {

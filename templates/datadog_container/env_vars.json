@@ -1,0 +1,13 @@
+[
+    { "name" : "DD_ENV", "value" : "${APP_MESH_NAME}.${APP_MESH_PROFILE}" },
+    { "name" : "DD_SERVICE", "value" : "${APP_NAME}" },
+    { "name" : "DD_VERSION", "value" : "0.0.1" },
+    { "name" : "DD_APM_DD_URL", "value" : "https://trace.agent.datadoghq.com" },
+    { "name" : "DD_APM_ENABLED","value" : "true" },
+    { "name" : "DD_APM_NON_LOCAL_TRAFFIC", "value" : "true" },
+    { "name" : "DD_DOCKER_ENV_AS_TAGS", "value" : "true" },
+    { "name" : "DD_DOCKER_LABELS_AS_TAGS", "value" : "true" },
+    { "name" : "ECS_FARGATE", "value" : "true" },
+    { "name" : "DD_SITE", "value" : "datadoghq.com" },
+    { "name" : "DD_USE_PROXY_FOR_CLOUD_METADATA", "value" : "true" }
+]
