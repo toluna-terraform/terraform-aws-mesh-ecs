@@ -22,4 +22,4 @@
     { "name" : "BACKEND_SERVICE_1", "value" : "${BACKEND_SERVICE}.${APP_MESH_NAME}.${TRIBE_NAME}.local"},
     { "name" : "EXTERNAL_SERVICE_1", "value" : "${EXTERNAL_SERVICE}"},
     { "name" : "ASPNETCORE_ENVIRONMENT", "value" : "${ENV_NAME}" }
-]
+]   
