@@ -1,3 +1,7 @@
+variable "task_specs" {
+
+}
+
 # General variables for module
 variable "app_name" {
   description = "app name"
@@ -80,6 +84,11 @@ variable "app_container_image" {
   type        = string
 }
 
+variable "app_container_secrets" {
+  description = "App container secrets"
+  default = []
+}
+
 # Datadog container related variables
 variable "create_datadog" {
   description = "Boolean which initiate datadog container creation or not"
@@ -127,8 +136,8 @@ variable "datadog_api_key" {
   type        = string
 }
 
-variable "envoy_app_ports" {
-  description = "The app ports for envoy to listen to"
+variable "envoy_container_port" {
+  description = "The app port for envoy to listen to"
   type  = string
   default = "80"
 }
