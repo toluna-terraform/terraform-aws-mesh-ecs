@@ -64,7 +64,7 @@ resource "aws_ecs_task_definition" "task_definition" {
   container_definitions = jsonencode([
         local.main_task,
         local.envoy_task,
-        local.datadog_task
+        var.enable_datadog == true ? local.datadog_task : null
     ])
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   cpu                      = var.task_definition_cpu

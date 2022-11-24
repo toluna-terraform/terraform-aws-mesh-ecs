@@ -90,7 +90,7 @@ variable "app_container_secrets" {
 }
 
 # Datadog container related variables
-variable "create_datadog" {
+variable "enable_datadog" {
   description = "Boolean which initiate datadog container creation or not"
   type        = bool
   default     = false
@@ -129,11 +129,6 @@ variable "datadog_container_environment" {
   description = "Datadog container environment variables"
   type        = list(map(string))
   default     = []
-}
-
-variable "datadog_api_key" {
-  description = "The secrets to pass to the datadog container"
-  type        = string
 }
 
 variable "envoy_container_port" {
