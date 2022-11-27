@@ -19,7 +19,8 @@
     { "name" : "DD_TAGS", "value" : "service:${APP_NAME},env:${APP_MESH_NAME}.${APP_MESH_PROFILE},version:0.0.1,source:${APP_NAME}" },
     { "name" : "DD_DOGSTATSD_NON_LOCAL_TRAFFIC", "value" : "true" },
     { "name" : "ECS_FARGATE", "value" : "true" },
-    { "name" : "BACKEND_SERVICE_1", "value" : "${BACKEND_SERVICE}.${APP_MESH_NAME}.${TRIBE_NAME}.local"},
-    { "name" : "EXTERNAL_SERVICE_1", "value" : "${EXTERNAL_SERVICE}"},
-    { "name" : "ASPNETCORE_ENVIRONMENT", "value" : "${ENV_NAME}" }
+    { "name" : "ASPNETCORE_ENVIRONMENT", "value" : "${ENV_NAME}" },
+    { "name" : "EXTERNAL_SERVICES", "value" : "${EXTERNAL_SERVICES}" },
+    { "name" : "BACKEND_SERVICES", "value" : "${BACKEND_SERVICES}" }
+
 ]   

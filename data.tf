@@ -36,7 +36,9 @@ data "template_file" "app_container_environment" {
     BACKENDS_LIST = "${var.backends}",
     ENV_NAME = "${var.env_name}", 
     APP_MESH_ACCOUNT_ID = "${var.app_mesh_account_id}",
-    APP_MESH_PROFILE = "${var.app_mesh_profile}" }
+    APP_MESH_PROFILE = "${var.app_mesh_profile}",
+    EXTERNAL_SERVICES = "${var.external_services}",
+    BACKEND_SERVICES = "${var.backends}"}
 }
 
 
