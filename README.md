@@ -22,16 +22,14 @@ module "ecs" {
   app_mesh_account_id           = local.mesh_owner_account_id
   namespace                     = data.terraform_remote_state.shared.outputs.shared_namespace[0]["${local.app_mesh_name}.${local.tribe_name}.local"].name
   namespace_id                  = data.terraform_remote_state.shared.outputs.shared_namespace[0]["${local.app_mesh_name}.${local.tribe_name}.local"].id
-  ecs_service_desired_count     = local.env_vars.ecs_service_desired_count
+  backends = local.env_vars.backends
+  external_services = local.env_vars.external_services
+  app_container_image           = "${local.ecr_repo_url}:${local.env_vars.from_env}"
   aws_cloudwatch_log_group_name = local.aws_cloudwatch_log_group
   subnet_ids                    = local.subnet_ids
-  datadog_api_key               = "/${data.aws_caller_identity.aws_profile.account_id}/datadog/api-key"
-  app_container_image           = "${local.ecr_repo_url}:${local.env_vars.from_env}"
   enable_datadog                = true
   tribe_name = local.tribe_name # Tribe represents the name of the domain/group. 
   app_mesh_profile = local.mesh_account_profile
-  backends = local.env_vars.backends
-  external_services = local.env_vars.external_services
 }
 ```
 
@@ -53,10 +51,8 @@ module "ecs" {
   app_mesh_profile = local.mesh_account_profile
   namespace                     = data.terraform_remote_state.shared.outputs.shared_namespace[0]["${local.app_mesh_name}.${local.tribe_name}.local"].name
   namespace_id                  = data.terraform_remote_state.shared.outputs.shared_namespace[0]["${local.app_mesh_name}.${local.tribe_name}.local"].id
-  ecs_service_desired_count     = local.env_vars.ecs_service_desired_count
+  app_container_image           = "${local.ecr_repo_url}:${local.env_vars.from_env}"
   aws_cloudwatch_log_group_name = local.aws_cloudwatch_log_group
   subnet_ids                    = local.subnet_ids
-  datadog_api_key               = "/${data.aws_caller_identity.aws_profile.account_id}/datadog/api-key"
-  app_container_image           = "${local.ecr_repo_url}:${local.env_vars.from_env}"
 }
 ```
