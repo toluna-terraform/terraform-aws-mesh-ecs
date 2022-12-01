@@ -158,7 +158,7 @@ variable "app_mesh_account_id" {
 }
 
 variable "backends" {
-  description = "List of backends for ocastrator"
+  description = "List of backends for orchestrator"
   type        = list(string)
   default     = []
 }

@@ -31,7 +31,7 @@ data "external" "current_service_image" {
 
 # Containers env vars
 data "template_file" "app_container_environment" {
-    template = file("${path.module}/templates/app_container/env_vars.json")
+    template = file("${path.module}/templates/app_env_vars.json")
     vars = { APP_NAME = "${var.app_name}", 
     BACKENDS_LIST = "${var.backends}",
     ENV_NAME = "${var.env_name}", 
@@ -43,13 +43,14 @@ data "template_file" "app_container_environment" {
 
 
 data "template_file" "envoy_container_environment" {
-  template = file("${path.module}/templates/envoy_container/env_vars.json")
+  template = file("${path.module}/templates/envoy_env_vars.json")
   vars = { APP_NAME = "${var.app_name}", 
     APP_MESH_NAME = "${var.app_mesh_name}" }
 }
 
+
 data "template_file" "datadog_container_environment" {
-  template = file("${path.module}/templates/datadog_container/env_vars.json")
+  template = file("${path.module}/templates/datadog_env_vars.json")
   vars = { 
     APP_NAME = "${var.app_name}", 
     APP_MESH_PROFILE = "${var.app_mesh_profile}",
