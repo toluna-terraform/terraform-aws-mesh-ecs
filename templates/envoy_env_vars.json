@@ -1,0 +1,6 @@
+[
+    { "name" : "APPMESH_RESOURCE_ARN", "value" : "arn:aws:appmesh:us-east-1:${data.aws_caller_identity.aws_profile.id}:mesh/${APP_MESH_NAME}@${data.aws_caller_identity.mesh_owner.id}/virtualNode/vn-${APP_NAME}-${ENVIRONMENT}" },
+    { "name" : "ENABLE_ENVOY_DATADOG_TRACING", "value" : "true" },
+    { "name" : "ENVOY_LOG_LEVEL", "value" : "off" },
+    { "name" : "DATADOG_TRACER_PORT", "value" : "8126" }
+  ]

@@ -1,3 +1,7 @@
+variable "task_specs" {
+
+}
+
 # General variables for module
 variable "app_name" {
   description = "app name"
@@ -5,9 +9,10 @@ variable "app_name" {
 }
 
 variable "env_name" {
-  description = "environment name"
-  type        = string
+  description = "Env name without color suffix."
+  type = string
 }
+
 
 variable "aws_profile" {
   description = "The profile name for the ECS"
@@ -73,43 +78,19 @@ variable "aws_cloudwatch_log_group_name" {
   type        = string
 }
 
-variable "app_container_environment" {
-  description = "The environment variables to pass to a container"
-  type        = list(map(string))
-  default     = []
-}
-
-variable "dockerLabels" {
-  description = "A key/value map of labels to add to the container"
-  type        = map(string)
-  default     = {}
-}
-
-variable "envoy_container_environment" {
-  description = "The environment variables to pass to a container"
-  type        = list(map(string))
-  default     = []
-}
-
-variable "envoy_dockerLabels" {
-  description = "A key/value map of labels to add to the container"
-  type        = map(string)
-  default     = {}
-}
-
-variable "app_container_secrets" {
-  description = "The secrets to pass to the app container"
-  type        = list(map(string))
-  default     = []
-}
 
 variable "app_container_image" {
   description = "App container image"
   type        = string
 }
 
+variable "app_container_secrets" {
+  description = "App container secrets"
+  default = []
+}
+
 # Datadog container related variables
-variable "create_datadog" {
+variable "enable_datadog" {
   description = "Boolean which initiate datadog container creation or not"
   type        = bool
   default     = false
@@ -150,20 +131,8 @@ variable "datadog_container_environment" {
   default     = []
 }
 
-variable "datadog_container_secrets" {
-  description = "The secrets to pass to the datadog container"
-  type        = list(map(string))
-  default     = []
-}
-
-variable "datadog_dockerLabels" {
-  description = "A key/value map of labels to add to the container"
-  type        = map(string)
-  default     = {}
-}
-
-variable "envoy_app_ports" {
-  description = "The app ports for envoy to listen to"
+variable "envoy_container_port" {
+  description = "The app port for envoy to listen to"
   type  = string
   default = "80"
 }
@@ -189,7 +158,7 @@ variable "app_mesh_account_id" {
 }
 
 variable "backends" {
-  description = "List of backends for ocastrator"
+  description = "List of backends for orchestrator"
   type        = list(string)
   default     = []
 }
