@@ -24,7 +24,7 @@ resource "aws_appmesh_gateway_route" "gw_route_1" {
   provider             = aws.app_mesh
   name                 = "gw-${var.app_mesh_name}-${local.prefix}-route"
   mesh_name            = var.app_mesh_name
-  mesh_owner           = var.app_mesh_account_idf
+  mesh_owner           = var.app_mesh_account_id
   virtual_gateway_name = "gw-${var.app_mesh_name}"
 
   spec {
