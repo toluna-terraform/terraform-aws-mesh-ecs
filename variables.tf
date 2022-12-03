@@ -14,6 +14,11 @@ variable "aws_profile" {
   type        = string
 }
 
+variable "aws_cloudwatch_log_group_name" {
+  description = "The CloudWatch log group name of the app."
+  type = string
+}
+
 variable "app_mesh_profile" {
   description = "The profile name of the Mesh owner."
   type        = string

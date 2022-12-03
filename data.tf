@@ -1,5 +1,8 @@
-# current AWS Region
+# Current AWS region
 data "aws_region" "current" {}
+
+# Current AWS account
+data "aws_caller_identity" "current" {  }
 
 
 # App Mesh policy
@@ -11,9 +14,6 @@ data "aws_iam_policy_document" "appmesh_role_policy" {
     resources = ["arn:aws:appmesh:*:*:mesh/*"]
   }
 }
-
-# Current Account 
-data "aws_caller_identity" "current" {}
 
 data "aws_ssm_parameter" "security_cidr" {
   name = "/infra/tgw/route_cidr"

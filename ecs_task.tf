@@ -21,7 +21,7 @@ locals {
             logConfiguration = {
                 logDriver = "awslogs"
                 options = {
-                    awslogs-group = aws_cloudwatch_log_group.ecs-service.name
+                    awslogs-group = var.aws_cloudwatch_log_group_name
                     awslogs-region = data.aws_region.current.id
                     awslogs-stream-prefix = "${var.app_name}-logs"
                 }
@@ -63,7 +63,7 @@ locals {
             logConfiguration = {
                 logDriver = "awslogs"
                 options = {
-                    awslogs-group = aws_cloudwatch_log_group.ecs-service.name
+                    awslogs-group = var.aws_cloudwatch_log_group_name
                     awslogs-region = data.aws_region.current.id
                     awslogs-stream-prefix = "envoy-logs"
                 }
@@ -74,7 +74,7 @@ locals {
             name = var.datadog_container_name
             image = var.datadog_container_image
             essential = true
-            secrets = [{ "name" : "DD_API_KEY", "valueFrom" : "/${data.aws_caller_identity.aws_profile.account_id}/datadog/api-key" }]
+            secrets = [{ "name" : "DD_API_KEY", "valueFrom" : "/${data.aws_caller_identity.current.account_id}/datadog/api-key" }]
             environment = local.datadog_container_environment == "[]" ? "null" : local.datadog_container_environment
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
             healthCheck = {
@@ -101,7 +101,7 @@ locals {
             logConfiguration = {
                 logDriver = "awslogs"
                 options = {
-                    awslogs-group = aws_cloudwatch_log_group.ecs-service.name
+                    awslogs-group = var.aws_cloudwatch_log_group_name
                     awslogs-region = data.aws_region.current.id
                     awslogs-stream-prefix = "datadog-logs"
                 }
