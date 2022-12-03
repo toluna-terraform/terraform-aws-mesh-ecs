@@ -45,13 +45,13 @@ variable "vpc_id" {
 variable "task_definition_cpu" {
   description = "Task definition CPU"
   type        = number
-  default     = 2048
+  default     = 512
 }
 
 variable "task_definition_memory" {
   description = "Task definition memory"
   type        = number
-  default     = 4096
+  default     = 2048
 }
 
 # Default container related variables
@@ -64,18 +64,13 @@ variable "app_container_cpu" {
 variable "app_container_memory" {
   description = "Default container memory"
   type        = number
-  default     = 4096
+  default     = 2048
 }
 
 variable "app_container_port" {
   description = "Default container port"
   type        = number
   default     = 80
-}
-
-variable "aws_cloudwatch_log_group_name" {
-  description = "Cloud watch log group name"
-  type        = string
 }
 
 
@@ -93,7 +88,7 @@ variable "app_container_secrets" {
 variable "enable_datadog" {
   description = "Boolean which initiate datadog container creation or not"
   type        = bool
-  default     = false
+  default     = true
 }
 variable "datadog_container_cpu" {
   description = "Datadog container cpu"
