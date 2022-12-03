@@ -1,8 +1,3 @@
-variable "task_specs" {
-
-}
-
-# General variables for module
 variable "app_name" {
   description = "app name"
   type        = string
