@@ -164,6 +164,11 @@ variable "external_services" {
   default     = []
 }
 
+variable "envoy_app_ports" {
+  description = "The app ports for envoy to listen to"
+  type  = string
+  default = "80"
+}
 
 variable "access_by_gateway_route" {
   description = "Boolean which initiates if service is added to App mesh gatway"

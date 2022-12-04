@@ -1,5 +1,5 @@
 [
-    { "name" : "APPMESH_RESOURCE_ARN", "value" : "arn:aws:appmesh:us-east-1:${data.aws_caller_identity.aws_profile.id}:mesh/${APP_MESH_NAME}@${data.aws_caller_identity.mesh_owner.id}/virtualNode/vn-${APP_NAME}-${ENVIRONMENT}" },
+    { "name" : "APPMESH_RESOURCE_ARN", "value" : "arn:aws:appmesh:us-east-1:${CURRENT_ACCOUNT_ID}:mesh/${APP_MESH_NAME}@${APP_MESH_ACCOUNT_ID}/virtualNode/vn-${APP_NAME}-${ENV_NAME}-{BG_COLOR}" },
     { "name" : "ENABLE_ENVOY_DATADOG_TRACING", "value" : "true" },
     { "name" : "ENVOY_LOG_LEVEL", "value" : "off" },
     { "name" : "DATADOG_TRACER_PORT", "value" : "8126" }

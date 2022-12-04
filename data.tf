@@ -33,19 +33,22 @@ data "external" "current_service_image" {
 data "template_file" "app_container_environment" {
     template = file("${path.module}/templates/app_env_vars.json")
     vars = { APP_NAME = "${var.app_name}", 
-    BACKENDS_LIST = "${var.backends}",
     ENV_NAME = "${var.env_name}", 
+    APP_MESH_NAME = "${var.app_mesh_name}",
     APP_MESH_ACCOUNT_ID = "${var.app_mesh_account_id}",
     APP_MESH_PROFILE = "${var.app_mesh_profile}",
-    EXTERNAL_SERVICES = "${var.external_services}",
-    BACKEND_SERVICES = "${var.backends}"}
+    EXTERNAL_SERVICES = jsonencode("${var.external_services}"),
+    BACKEND_SERVICES = jsonencode("${var.backends}")}
 }
 
 
 data "template_file" "envoy_container_environment" {
   template = file("${path.module}/templates/envoy_env_vars.json")
   vars = { APP_NAME = "${var.app_name}", 
-    APP_MESH_NAME = "${var.app_mesh_name}" }
+    APP_MESH_NAME = "${var.app_mesh_name}",
+    APP_MESH_ACCOUNT_ID= "${var.app_mesh_account_id}",
+    CURRENT_ACCOUNT_ID = "${data.aws_caller_identity.current.id}",
+    ENV_NAME = "${var.env_name}" }
 }
 
 
