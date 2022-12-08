@@ -7,9 +7,6 @@
 locals {
     prefix = "${var.app_name}-${var.env_name}"
     security_cidr = split(",", data.aws_ssm_parameter.security_cidr.value)
-    app_container_environment     = jsonencode(data.template_file.app_container_environment)
-    envoy_container_environment     = jsonencode(data.template_file.envoy_container_environment)
-    datadog_container_environment     = jsonencode(data.template_file.datadog_container_environment)
     external_services_list = var.is_orchestrator == true ? var.external_services : []
 }
 
@@ -65,9 +62,9 @@ resource "aws_ecs_task_definition" "task_definition" {
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   container_definitions = jsonencode([
-        local.main_task,
+        local.app_task,
         local.envoy_task,
-        var.enable_datadog == true ? local.datadog_task : null
+        local.datadog_task
     ])
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   cpu                      = var.task_definition_cpu
@@ -76,7 +73,7 @@ resource "aws_ecs_task_definition" "task_definition" {
     type           = "APPMESH"
     container_name = "envoy"
     properties = {
-      AppPorts         = var.envoy_app_ports
+      AppPorts         = var.envoy_container_port
       EgressIgnoredIPs = "169.254.170.2,169.254.169.254"
       IgnoredUID       = "1337"
       ProxyEgressPort  = 15001
