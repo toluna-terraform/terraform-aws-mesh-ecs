@@ -70,7 +70,7 @@ locals {
     { "name" = "BACKEND_SERVICES"
       "value" = "${var.backends}" 
     }
-  ]   
+    ]   
 
     # --- Datadog container environment variables --- #
     datadog_env_vars = [
@@ -127,15 +127,21 @@ locals {
 
     # --- App container definitino --- #
     app_task = {
-            name = var.app_name
-            image = var.app_container_image
-            cpu = var.task_definition_cpu
-            memory = var.task_definition_memory
-            essential = true
-            environment = concat(local.app_env_vars,var.app_environment_variables)
-            secrets = var.app_container_secrets
-            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
-            portMappings =  [
+            name = var.app_name,
+            image = var.app_container_image,
+            cpu = var.task_definition_cpu,
+            memory = var.task_definition_memory,
+            essential = true,
+            #environment = concat(local.app_env_vars,var.app_environment_variables)
+            #environment = local.app_env_vars
+            #environment = [{"name": "environment", "value": "${local.app_env_vars}"}]
+            #environment = jsonencode(local.app_env_vars)
+            "environment": [
+            {"name": "VARNAME", "value": "VARVAL"}
+             ],
+            secrets = var.app_container_secrets,
+            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
+            portMappings = [
                 {
                     protocol = "tcp"
                     containerPort = var.app_container_port
@@ -144,7 +150,7 @@ locals {
                     protocol = "tcp"
                     hostPort = var.app_container_port
                 }
-            ]
+            ],
             logConfiguration = {
                 logDriver = "awslogs"
                 options = {
@@ -152,7 +158,7 @@ locals {
                     awslogs-region = data.aws_region.current.id
                     awslogs-stream-prefix = "${var.app_name}-logs"
                 }
-            }
+            },
             dependsOn = [{
                 containerName = "envoy"
                 condition = "HEALTHY"
@@ -162,11 +168,17 @@ locals {
     
     # --- Envoy container definitino --- #
     envoy_task = {        
-            name = "envoy"
-            image = "840364872350.dkr.ecr.eu-west-1.amazonaws.com/aws-appmesh-envoy:v1.22.0.0-prod"
-            essential = true
-            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
-            environment = concat(local.envoy_env_vars,var.envoy_environment_variables)
+            name = "envoy",
+            image = "840364872350.dkr.ecr.eu-west-1.amazonaws.com/aws-appmesh-envoy:v1.22.0.0-prod",
+            essential = true,
+            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
+            #environment = local.envoy_env_vars
+            #environment = concat(local.envoy_env_vars,var.envoy_environment_variables)
+            #environment = [{"name": "environment", "value": "${local.envoy_env_vars}"}]
+            #environment = jsonencode(local.envoy_env_vars)
+            "environment": [
+            {"name": "VARNAME", "value": "VARVAL"}
+            ],
             healthCheck = {
                 command = [
                     "CMD-SHELL",
@@ -176,8 +188,8 @@ locals {
                 interval = 5
                 timeout = 2
                 retries = 3
-            }
-            user = "1337"
+            },
+            user = "1337",
             portMappings =  [
                 {
                     protocol = "tcp"
@@ -187,7 +199,7 @@ locals {
                     protocol = "tcp"
                     hostPort = var.envoy_container_port
                 }
-            ]
+            ],
             logConfiguration = {
                 logDriver = "awslogs"
                 options = {
@@ -200,12 +212,18 @@ locals {
     
     # --- Datadog container definitino --- #
     datadog_task = {        
-            name = var.datadog_container_name
-            image = var.datadog_container_image
-            essential = true
-            secrets = [{ "name" : "DD_API_KEY", "valueFrom" : "/${data.aws_caller_identity.current.account_id}/datadog/api-key" }]
-            environment = concat(local.datadog_env_vars,var.datadog_environment_variables)
-            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
+            name = var.datadog_container_name,
+            image = var.datadog_container_image,
+            essential = true,
+            secrets = [{ "name" : "DD_API_KEY", "valueFrom" : "/${data.aws_caller_identity.current.account_id}/datadog/api-key" }],
+            #environment = concat(local.datadog_env_vars,var.datadog_environment_variables),
+            #environment = local.datadog_env_vars
+            #environment = [{"name": "environment", "value": "${local.datadog_env_vars}"}]
+            #environment = jsonencode(local.datadog_env_vars)
+            "environment": [
+            {"name": "VARNAME", "value": "VARVAL"}
+            ],
+            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
             healthCheck = {
                 command = [
                     "CMD-SHELL",
@@ -215,8 +233,8 @@ locals {
                 interval = 5
                 timeout = 2
                 retries = 3
-            }
-            user = "1337"
+            },
+            user = "1337",
             portMappings =  [
                 {
                     protocol = "tcp"
@@ -226,7 +244,7 @@ locals {
                     protocol = "tcp"
                     hostPort = var.datadog_container_port
                 }
-            ]
+            ],
             logConfiguration = {
                 logDriver = "awslogs"
                 options = {
@@ -234,6 +252,6 @@ locals {
                     awslogs-region = data.aws_region.current.id
                     awslogs-stream-prefix = "datadog-logs"
                 }
-            }
+            },
         }
 }

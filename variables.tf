@@ -156,7 +156,7 @@ variable "envoy_environment_variables" {
 
 variable "envoy_container_port" {
   description = "The app port for envoy to listen to"
-  type  = string
+  type  = number
   default = "80"
 }
 
