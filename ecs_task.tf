@@ -143,11 +143,7 @@ locals {
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
             portMappings = [
                 {
-                    protocol = "tcp"
                     containerPort = var.app_container_port
-                },
-                {
-                    protocol = "tcp"
                     hostPort = var.app_container_port
                 }
             ],
@@ -190,16 +186,7 @@ locals {
                 retries = 3
             },
             user = "1337",
-            portMappings =  [
-                {
-                    protocol = "tcp"
-                    containerPort = var.envoy_container_port
-                },
-                {
-                    protocol = "tcp"
-                    hostPort = var.envoy_container_port
-                }
-            ],
+            portMappings =  [],
             logConfiguration = {
                 logDriver = "awslogs"
                 options = {
@@ -237,11 +224,7 @@ locals {
             user = "1337",
             portMappings =  [
                 {
-                    protocol = "tcp"
                     containerPort = var.datadog_container_port
-                },
-                {
-                    protocol = "tcp"
                     hostPort = var.datadog_container_port
                 }
             ],
