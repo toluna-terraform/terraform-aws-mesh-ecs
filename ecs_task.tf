@@ -203,10 +203,6 @@ locals {
             image = var.datadog_container_image,
             essential = true,
             secrets = [{ "name" : "DD_API_KEY", "valueFrom" : "/${data.aws_caller_identity.current.account_id}/datadog/api-key" }],
-            #environment = concat(local.datadog_env_vars,var.datadog_environment_variables),
-            #environment = local.datadog_env_vars
-            #environment = [{"name": "environment", "value": "${local.datadog_env_vars}"}]
-            #environment = jsonencode(local.datadog_env_vars)
             "environment": [
             {"name": "VARNAME", "value": "VARVAL"}
             ],
