@@ -39,7 +39,7 @@ resource "aws_ecs_service" "main" {
     assign_public_ip = false
   }
   service_registries {
-    registry_arn = aws_service_discovery_service.net.arn
+    registry_arn = aws_service_discovery_service.discovery_srv.arn
   }
 
 deployment_circuit_breaker {

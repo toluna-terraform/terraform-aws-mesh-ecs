@@ -164,17 +164,11 @@ locals {
     
     # --- Envoy container definitino --- #
     envoy_task = {        
-            name = "envoy",
-            image = "840364872350.dkr.ecr.eu-west-1.amazonaws.com/aws-appmesh-envoy:v1.22.0.0-prod",
-            essential = true,
-            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
-            #environment = local.envoy_env_vars
-            #environment = concat(local.envoy_env_vars,var.envoy_environment_variables)
-            #environment = [{"name": "environment", "value": "${local.envoy_env_vars}"}]
-            #environment = jsonencode(local.envoy_env_vars)
-            "environment": [
-            {"name": "VARNAME", "value": "VARVAL"}
-            ],
+            name = "envoy"
+            image = "public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.0.0-prod"
+            essential = true
+            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
+            environment = local.envoy_container_environment == "[]" ? "null" : local.envoy_container_environment
             healthCheck = {
                 command = [
                     "CMD-SHELL",

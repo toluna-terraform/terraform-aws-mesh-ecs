@@ -4,7 +4,7 @@
 ##########################################################################
 ##########################################################################
 
-resource "aws_service_discovery_service" "net" {
+resource "aws_service_discovery_service" "discovery_srv" {
   name = "${var.env_name}"
   dns_config {
     namespace_id = var.namespace_id
