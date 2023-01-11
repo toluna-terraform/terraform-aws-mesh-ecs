@@ -120,15 +120,43 @@ variable "datadog_container_image" {
   default     = "datadog/agent:latest"
 }
 
-variable "datadog_container_environment" {
+variable "app_environment_variables" {
   description = "Datadog container environment variables"
-  type        = list(map(string))
-  default     = []
+    type = list(object(
+        {
+            name = string
+            value = string
+        }
+    ))
+    default = []
 }
+
+variable "datadog_environment_variables" {
+  description = "Datadog container environment variables"
+    type = list(object(
+        {
+            name = string
+            value = string
+        }
+    ))
+    default = []
+}
+
+variable "envoy_environment_variables" {
+  description = "Envoy container environment variables"
+    type = list(object(
+        {
+            name = string
+            value = string
+        }
+    ))
+    default = []
+}
+
 
 variable "envoy_container_port" {
   description = "The app port for envoy to listen to"
-  type  = string
+  type  = number
   default = "80"
 }
 
@@ -162,12 +190,6 @@ variable "external_services" {
   description = "List of external services for integrator"
   type        = list(string)
   default     = []
-}
-
-variable "envoy_app_ports" {
-  description = "The app ports for envoy to listen to"
-  type  = string
-  default = "80"
 }
 
 variable "access_by_gateway_route" {
