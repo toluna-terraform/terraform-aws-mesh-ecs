@@ -168,7 +168,7 @@ locals {
             image = "public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.0.0-prod"
             essential = true
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
-            environment = local.envoy_container_environment == "[]" ? "null" : local.envoy_container_environment
+            environment = local.envoy_env_vars == "[]" ? "null" : local.envoy_env_vars
             healthCheck = {
                 command = [
                     "CMD-SHELL",
