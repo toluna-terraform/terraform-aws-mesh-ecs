@@ -132,11 +132,7 @@ locals {
             cpu = var.task_definition_cpu,
             memory = var.task_definition_memory,
             essential = true,
-            #environment = concat(local.app_env_vars,var.app_environment_variables)
-            #environment = local.app_env_vars
-            #environment = [{"name": "environment", "value": "${local.app_env_vars}"}]
-            #environment = jsonencode(local.app_env_vars)
-            "environment": local.app_env_vars,
+            environment = local.app_env_vars,
             secrets = var.app_container_secrets,
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
             portMappings = [
@@ -195,7 +191,7 @@ locals {
             image = var.datadog_container_image,
             essential = true,
             secrets = [{ "name" : "DD_API_KEY", "valueFrom" : "/${data.aws_caller_identity.current.account_id}/datadog/api-key" }],
-            "environment": local.datadog_env_vars,
+            environment = local.datadog_env_vars,
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
             healthCheck = {
                 command = [
