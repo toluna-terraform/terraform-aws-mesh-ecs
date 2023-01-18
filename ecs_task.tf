@@ -136,9 +136,7 @@ locals {
             #environment = local.app_env_vars
             #environment = [{"name": "environment", "value": "${local.app_env_vars}"}]
             #environment = jsonencode(local.app_env_vars)
-            "environment": [
-            {"name": "VARNAME", "value": "VARVAL"}
-             ],
+            "environment": local.app_env_vars,
             secrets = var.app_container_secrets,
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
             portMappings = [
@@ -168,7 +166,7 @@ locals {
             image = "public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.0.0-prod"
             essential = true
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
-            environment = local.envoy_env_vars == "[]" ? "null" : local.envoy_env_vars
+            environment = local.envoy_env_vars
             healthCheck = {
                 command = [
                     "CMD-SHELL",
@@ -197,9 +195,7 @@ locals {
             image = var.datadog_container_image,
             essential = true,
             secrets = [{ "name" : "DD_API_KEY", "valueFrom" : "/${data.aws_caller_identity.current.account_id}/datadog/api-key" }],
-            "environment": [
-            {"name": "VARNAME", "value": "VARVAL"}
-            ],
+            "environment": local.datadog_env_vars,
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn,
             healthCheck = {
                 command = [
