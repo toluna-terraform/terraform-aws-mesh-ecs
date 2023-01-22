@@ -182,13 +182,13 @@ variable "app_mesh_account_id" {
 
 variable "backends" {
   description = "List of backends for orchestrator"
-  type        = list(string)
+  type        = list
   default     = []
 }
 
 variable "external_services" {
   description = "List of external services for integrator"
-  type        = list(string)
+  type        = list
   default     = []
 }
 
