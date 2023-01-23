@@ -61,7 +61,97 @@ resource "aws_ecs_task_definition" "task_definition" {
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  container_definitions = jsonencode([local.app_task])
+  container_definitions = jsonencode([
+      {
+            name = var.app_name
+            image = var.app_container_image
+            cpu = var.task_definition_cpu
+            memory = var.task_definition_memory
+            essential = true
+            environment = local.app_env_vars
+            secrets = var.app_container_secrets
+            taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
+            portMappings = [
+                {
+                    containerPort = var.app_container_port
+                    hostPort = var.app_container_port
+                }
+            ]
+            logConfiguration = {
+                logDriver = "awslogs"
+                options = {
+                    awslogs-group = var.aws_cloudwatch_log_group_name
+                    awslogs-region = data.aws_region.current.id
+                    awslogs-stream-prefix = "${var.app_name}-logs"
+                }
+            }
+            
+      },
+
+      # --- Envoy container definitino --- #
+      {        
+          name = "envoy"
+          image = "public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.0.0-prod"
+          essential = true
+          taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
+          environment = local.envoy_env_vars
+          healthCheck = {
+              command = [
+                  "CMD-SHELL",
+                  "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
+              ]
+              startPeriod = 10
+              interval = 5
+              timeout = 2
+              retries = 3
+          }
+          user = "1337"
+          portMappings =  []
+          logConfiguration = {
+              logDriver = "awslogs"
+              options = {
+                  awslogs-group = var.aws_cloudwatch_log_group_name
+                  awslogs-region = data.aws_region.current.id
+                  awslogs-stream-prefix = "envoy-logs"
+              }
+          }
+      },
+
+      # --- Datadog container definitino --- #
+      {        
+          name = var.datadog_container_name
+          image = var.datadog_container_image
+          essential = true
+          secrets = [{ "name" : "DD_API_KEY", "valueFrom" : "/${data.aws_caller_identity.current.account_id}/datadog/api-key" }]
+          environment = local.datadog_env_vars
+          taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
+          healthCheck = {
+              command = [
+                  "CMD-SHELL",
+                  "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
+              ]
+              startPeriod = 10
+              interval = 5
+              timeout = 2
+              retries = 3
+          }
+          user = "1337"
+          portMappings =  [
+              {
+                  containerPort = var.datadog_container_port
+                  hostPort = var.datadog_container_port
+              }
+          ]
+          logConfiguration = {
+              logDriver = "awslogs"
+              options = {
+                  awslogs-group = var.aws_cloudwatch_log_group_name
+                  awslogs-region = data.aws_region.current.id
+                  awslogs-stream-prefix = "datadog-logs"
+              }
+          }
+      }
+    ])
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   cpu                      = var.task_definition_cpu
   memory                   = var.task_definition_memory

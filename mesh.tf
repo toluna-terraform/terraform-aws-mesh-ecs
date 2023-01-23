@@ -160,7 +160,7 @@ resource "aws_appmesh_virtual_node" "blue_green_virtual_nodes" {
 resource "aws_appmesh_virtual_service" "external_service_virtualservice" {
   for_each  = toset(local.external_services_list)
   name      = "${each.key}"
-  mesh_name = var.env_name
+  mesh_name = var.app_mesh_name
   mesh_owner = var.app_mesh_account_id
   spec {
     provider {
