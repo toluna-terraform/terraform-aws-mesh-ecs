@@ -61,7 +61,7 @@ resource "aws_ecs_task_definition" "task_definition" {
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  container_definitions = jsonencode([local.app_task])
+  container_definitions = jsonencode([local.app_task,local.envoy_task,local.datadog_task])
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   cpu                      = var.task_definition_cpu
   memory                   = var.task_definition_memory
