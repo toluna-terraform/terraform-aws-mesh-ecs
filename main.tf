@@ -19,7 +19,7 @@ provider "aws" {
 
 #--- ECS resources ---#
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "ecs-${local.prefix}"
+  name = "${local.prefix}"
 }
 
 resource "aws_ecs_service" "main" {
@@ -56,7 +56,7 @@ deployment_circuit_breaker {
 }
 
 resource "aws_ecs_task_definition" "task_definition" {
-  for_each = toset(["blue","green"])
+  for_each = toset(["blue", "green"])
   family                   = "${local.prefix}-${each.key}"
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
@@ -68,6 +68,7 @@ resource "aws_ecs_task_definition" "task_definition" {
             cpu = var.task_definition_cpu
             memory = var.task_definition_memory
             essential = true
+            # environment = split (",", replace(jsonencode(local.app_env_vars), "{BG_COLOR}", each.key) )
             environment = local.app_env_vars
             secrets = var.app_container_secrets
             taskRoleArn = aws_iam_role.ecs_task_execution_role.arn
@@ -128,7 +129,7 @@ resource "aws_ecs_task_definition" "task_definition" {
           healthCheck = {
               command = [
                   "CMD-SHELL",
-                  "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
+                  "agent health"
               ]
               startPeriod = 10
               interval = 5
