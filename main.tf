@@ -24,7 +24,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 
 resource "aws_ecs_service" "main" {
   for_each = toset(["blue","green"])
-  name                = "srv-${local.prefix}-${each.key}"
+  name                = "${local.prefix}-${each.key}"
   cluster             = aws_ecs_cluster.ecs_cluster.id
   task_definition     = aws_ecs_task_definition.task_definition[each.key].arn
   launch_type         = "FARGATE"
