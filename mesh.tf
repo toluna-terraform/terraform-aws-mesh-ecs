@@ -110,6 +110,7 @@ resource "aws_appmesh_route" "service_route" {
 
 resource "aws_appmesh_virtual_node" "blue_green_virtual_nodes" {
   for_each   = toset(["blue", "green"])
+
   name       = "vn-${var.app_name}-${var.env_name}-${each.key}"
   mesh_name  = var.app_mesh_name
   mesh_owner = "${var.app_mesh_account_id}"
@@ -142,6 +143,10 @@ resource "aws_appmesh_virtual_node" "blue_green_virtual_nodes" {
       aws_cloud_map {
         service_name   = var.env_name
         namespace_name = var.namespace
+
+        attributes = {
+          "ECS_SERVICE_NAME" = "${var.app_name}-${var.env_name}-${each.key}"
+        }      
       }
     }
 
@@ -165,7 +170,8 @@ resource "aws_appmesh_virtual_service" "external_service_virtualservice" {
   spec {
     provider {
       virtual_router {
-        virtual_router_name = "vr-questionnaire-net-qas"
+        # virtual_router_name = "vr-questionnaire-net-qas"
+        virtual_router_name = "vr-${var.app_name}-${var.env_name}"
       }
     }
   }

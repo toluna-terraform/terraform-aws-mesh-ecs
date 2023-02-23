@@ -9,3 +9,7 @@ output "ecs_service_info" {
 output "ecs_task_execution_role" {
   value = aws_iam_role.ecs_task_execution_role
 }
+
+output "external_services" {
+  value = local.external_services_list
+}
